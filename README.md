@@ -5,8 +5,8 @@
 # Instalación
 ``` bash
 # Clona el repositorio
-$ git clone https://github.com/juangtzi/client-robot-controller.git
-$ cd client-robot-controller
+$ git clone https://github.com/juangtzi/robot-controller.git
+$ cd robot-controller
 
 # Instala las dependencias
 $ npm install
