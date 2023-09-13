@@ -1,69 +1,61 @@
 "use client";
-import React, { useState } from "react";
-import { Joystick, JoystickShape } from "react-joystick-component";
-import "./globals.css";
+import React, { useState } from 'react';
+import Room from '../components/Room';
+import Robot from '../components/Robot';
+import Joystick from '../components/Joystick';
 
-export default function RemoteController() {
-  const [joystickData, setJoystickData] = useState({
-    type: "",
-    direction: "",
-    distance: 0,
-    x: 0,
-    y: 0,
-  });
+const Home = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  // Función para manejar el evento cuando el joystick se mueve
-  const handleJoystickMove = (data) => {
-    // Actualiza el estado con los datos del joystick
-    setJoystickData(data);
-    console.log(data);
-  };
 
-  // Función para manejar el evento cuando el joystick se detiene
-  const handleJoystickStop = (data) => {
-    // Actualiza el estado con los datos del joystick
-    setJoystickData(data);
-    console.log(data);
+  const roomWidth = 400;
+  const roomHeight = 400;
+  const robotSize = 10;
+  const robotSpeed = 1;
+
+
+  const handleMoveRobot = (direction) => {
+    // Copia la posición actual para modificarla
+    let { x, y } = position;
+  
+    // Calcula la nueva posición en función de la dirección
+    switch (direction) {
+      case 'FORWARD':
+        y = Math.max(0, y - robotSpeed);
+        break;
+      case 'BACKWARD':
+        y = Math.min(roomHeight - robotSize, y + robotSpeed);
+        break;
+      case 'LEFT':
+        x = Math.max(0, x - robotSpeed);
+        break;
+      case 'RIGHT':
+        x = Math.min(roomWidth - robotSize, x + robotSpeed);
+        break;
+      default:
+        break;
+    }
+  
+    // Actualiza la posición del robot
+    setPosition({ x, y });
+    console.log(position)
+  
+    // Enviar la nueva posición (x, y) al servidor
   };
 
   return (
     <div>
-      <header className="header">
-        <h1 className="title">Robot Controller</h1>
-      </header>
 
-      <div className="joystickStyle">
-        <Joystick
-          controlPlaneShape={JoystickShape.AxisY}
-          sticky={false}
-          baseColor="grey"
-          stickColor="black"
-          move={handleJoystickMove}
-          stop={handleJoystickStop}
-          stickImage="https://i.ibb.co/cCbLywJ/arrow-v.jpg"
-        ></Joystick>
-
-        {/* Muestra la información del joystick en pantalla */}
-        {/* <div className='informationStyle'> */}
-        <div className="contentWrapper">
-          <p>Type: {joystickData.type}</p>
-          <p>Direction: {joystickData.direction}</p>
-          <p>Distance: {joystickData.distance?.toFixed(2)}</p>
-          <p>X: {joystickData.x?.toFixed(2)}</p>
-          <p>Y: {joystickData.y?.toFixed(2)}</p>
+        <Room />
+        <div className='information'>
+          <p>X = {position.x}</p>
+          <p>Y = {position.y}</p>
         </div>
-        {/* </div> */}
+        <Robot x={position.x} y={position.y} />
+        <Joystick onMove={handleMoveRobot} />
 
-        <Joystick
-          controlPlaneShape={JoystickShape.AxisX}
-          sticky={false}
-          baseColor="grey"
-          stickColor="black"
-          move={handleJoystickMove}
-          stop={handleJoystickStop}
-          stickImage="https://i.ibb.co/kHpp9qs/arrow.jpg"
-        ></Joystick>
-      </div>
     </div>
   );
-}
+};
+
+export default Home;
