@@ -1,6 +1,7 @@
 # Requisitos
 
 - Node.js (v18.14.0)
+- npm (v9.8.1)
 
 # Instalación
 ``` bash
