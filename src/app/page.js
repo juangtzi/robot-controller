@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
-import Room from '../components/Room';
-import Robot from '../components/Robot';
-import Joystick from '../components/Joystick';
+import React, { useState } from "react";
+import Room from "../components/Room";
+import Robot from "../components/Robot";
+import Joystick from "../components/Joystick";
 
 const Home = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
