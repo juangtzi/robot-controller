@@ -1,55 +1,61 @@
 "use client";
-import React, { useState } from "react";
-import Room from "../components/Room";
+import React, { useState, useRef } from "react";
+
+//import Room from "../components/Room";
 import Robot from "../components/Robot";
-import Joystick from "../components/Joystick";
+import NormalJoystick from "@/components/NormalJoystick";
+import AngleJoystick from "@/components/AngleJoystick";
 
 const Home = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 150, y: 150 });
 
-  const roomWidth = 400;
-  const roomHeight = 400;
-  const robotSize = 10;
-  const robotSpeed = 1;
+  const [degree, setDegree] = useState(0);
+  const myDegreeRef = useRef(degree);
 
-  const handleMoveRobot = (direction) => {
-    // Copia la posición actual para modificarla
-    let { x, y } = position;
+  let { x, y } = position;
 
-    // Calcula la nueva posición en función de la dirección
-    switch (direction) {
-      case "FORWARD":
-        y = Math.max(0, y - robotSpeed);
-        break;
-      case "BACKWARD":
-        y = Math.min(roomHeight - robotSize, y + robotSpeed);
-        break;
-      case "LEFT":
-        x = Math.max(0, x - robotSpeed);
-        break;
-      case "RIGHT":
-        x = Math.min(roomWidth - robotSize, x + robotSpeed);
-        break;
-      default:
-        break;
+  const handleJoystickData = (data) => {
+    console.log("Grados:", myDegreeRef.current);
+    console.log(data);
+
+    const currentDegree = myDegreeRef.current;
+    const forceMultiplier = 10;
+
+    // Convierte el ángulo a radianes
+    const radians = (currentDegree * Math.PI) / 180;
+
+    if (data?.direction?.y == "down") {
+      y -= data?.force * forceMultiplier * Math.cos(radians);
+      x += data?.force * forceMultiplier * Math.sin(radians);
+    } else {
+      x -= data?.force * forceMultiplier * Math.sin(radians);
+      y += data?.force * forceMultiplier * Math.cos(radians);
     }
-
-    // Actualiza la posición del robot
     setPosition({ x, y });
-    console.log(position);
+  };
 
-    // Enviar la nueva posición (x, y) al servidor
+  const handleJoystickDataAngle = (data) => {
+    const rotation = data.angle.degree;
+
+    //console.log(data.angle.degree);
+    setDegree(rotation);
+    myDegreeRef.current = rotation;
   };
 
   return (
     <div>
-      <Room />
       <div className="information">
-        <p>X = {position.x}</p>
-        <p>Y = {position.y}</p>
+        <p>X = {position.x.toFixed(0)}</p>
+        <p>Y = {position.y.toFixed(0)}</p>
+        <p>Degrees = {degree.toFixed(0)}</p>
       </div>
-      <Robot x={position.x} y={position.y} />
-      <Joystick onMove={handleMoveRobot} />
+      <Robot x={position.x} y={position.y} angle={degree} />
+      <div className="wrapperRobot">
+        <div className="joystickStyle">
+          <NormalJoystick onJoystickMove={handleJoystickData} />
+          <AngleJoystick onJoystickMove2={handleJoystickDataAngle} />
+        </div>
+      </div>
     </div>
   );
 };
