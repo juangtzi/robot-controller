@@ -1,12 +1,12 @@
-import nipplejs from 'nipplejs';
-import React, { useEffect, useState } from 'react';
+"use client";
+import Nipple from "nipplejs";
+import React, { useEffect } from "react";
 
 function AngleJoystick({ onJoystickMove2 }) {
-  
   useEffect(() => {
-    const joystickContainer = document.getElementById('left');
+    const joystickContainer = document.getElementById("left");
 
-    const joystick = nipplejs.create({
+    const joystick = Nipple.create({
       zone: joystickContainer,
       size: 120,
       multitouch: true,
@@ -17,44 +17,36 @@ function AngleJoystick({ onJoystickMove2 }) {
       // position: { top: 20, left: 20 },
       //position: { top: "600px", left: "600px" },
       dynamicPage: true,
-      color: 'black',
-
+      color: "black",
     });
 
-    
-      //let pos = {};
-      let interval;
-      let data2 = {};
-  
+    //let pos = {};
+    let interval;
+    let data2 = {};
 
-    joystick.on('move', (evt, data) => {
+    joystick.on("move", (evt, data) => {
       //console.log(data);
       //pos = data.position;
       //data2 = data.angle;
       data2 = data;
       //onJoystickMove(data);
-      
     });
 
     joystick.on("start", () => {
-      
       interval = setInterval(() => {
         //console.log(pos);
         onJoystickMove2(data2);
-        //console.log(data2); 
-      }, 100)
-    })
+        //console.log(data2);
+      }, 100);
+    });
     joystick.on("end", () => {
       clearInterval(interval);
-    })
-
-  
+    });
   }, []);
 
   return (
     <div>
-      <div id='left'></div>
-      
+      <div id="left"></div>
     </div>
   );
 }

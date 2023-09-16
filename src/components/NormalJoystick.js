@@ -1,11 +1,12 @@
-import nipplejs from "nipplejs";
-import React, { useEffect, useState } from "react";
+"use client";
+import Nipple from "nipplejs";
+import React, { useEffect } from "react";
 
 function NormalJoystick({ onJoystickMove }) {
   useEffect(() => {
     const joystickContainer = document.getElementById("right");
 
-    const joystick = nipplejs.create({
+    const joystick = Nipple.create({
       zone: joystickContainer,
       size: 120,
       multitouch: true,

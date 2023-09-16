@@ -1,10 +1,21 @@
 "use client";
 import React, { useState, useRef } from "react";
 
-//import Room from "../components/Room";
+import dynamic from "next/dynamic";
+
+const JoystickY = dynamic(() => import("../components/NormalJoystick"), {
+  ssr: false,
+});
+
+const JoystickAngle = dynamic(() => import("../components/AngleJoystick"), {
+  ssr: false,
+});
+
 import Robot from "../components/Robot";
-import NormalJoystick from "@/components/NormalJoystick";
-import AngleJoystick from "@/components/AngleJoystick";
+
+//import Room from "../components/Room";
+//import NormalJoystick from "@/components/NormalJoystick";
+//import AngleJoystick from "@/components/AngleJoystick";
 
 const Home = () => {
   const [position, setPosition] = useState({ x: 150, y: 150 });
@@ -52,8 +63,8 @@ const Home = () => {
       <Robot x={position.x} y={position.y} angle={degree} />
       <div className="wrapperRobot">
         <div className="joystickStyle">
-          <NormalJoystick onJoystickMove={handleJoystickData} />
-          <AngleJoystick onJoystickMove2={handleJoystickDataAngle} />
+          <JoystickY onJoystickMove={handleJoystickData} />
+          <JoystickAngle onJoystickMove2={handleJoystickDataAngle} />
         </div>
       </div>
     </div>
