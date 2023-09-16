@@ -26,8 +26,25 @@ const Home = () => {
   let { x, y } = position;
 
   const handleJoystickData = (data) => {
-    console.log("Grados:", myDegreeRef.current);
-    console.log(data);
+    //console.log("Grados:", myDegreeRef.current);
+    //console.log(data);
+
+    let maxJoystickForce = 0;
+
+    // Obtener el valor de fuerza actual del joystick
+    const joystickForce = data?.force;
+
+    // Actualizar el valor máximo si es necesario
+    if (joystickForce > maxJoystickForce) {
+      maxJoystickForce = joystickForce;
+      
+    }
+    //console.log("Fuerza Maxima:", maxJoystickForce);
+
+    // Normalizar el valor de fuerza utilizando el valor máximo observado
+    const scaledForce = joystickForce / maxJoystickForce;
+    //console.log("Normalización de Fuerza:", scaledForce);
+
 
     const currentDegree = myDegreeRef.current;
     const forceMultiplier = 10;
@@ -36,11 +53,11 @@ const Home = () => {
     const radians = (currentDegree * Math.PI) / 180;
 
     if (data?.direction?.y == "down") {
-      y -= data?.force * forceMultiplier * Math.cos(radians);
-      x += data?.force * forceMultiplier * Math.sin(radians);
+      y -= scaledForce * forceMultiplier * Math.cos(radians);
+      x += scaledForce * forceMultiplier * Math.sin(radians);
     } else {
-      x -= data?.force * forceMultiplier * Math.sin(radians);
-      y += data?.force * forceMultiplier * Math.cos(radians);
+      x -= scaledForce * forceMultiplier * Math.sin(radians);
+      y += scaledForce * forceMultiplier * Math.cos(radians);
     }
     setPosition({ x, y });
   };
