@@ -29,7 +29,7 @@ const Home = () => {
     //console.log("Grados:", myDegreeRef.current);
     //console.log(data);
 
-    let maxJoystickForce = 0;
+    let maxJoystickForce = 1;
 
     // Obtener el valor de fuerza actual del joystick
     const joystickForce = data?.force;
@@ -44,7 +44,7 @@ const Home = () => {
     // Normalizar el valor de fuerza utilizando el valor máximo observado
     const scaledForce = joystickForce / maxJoystickForce;
     //console.log("Normalización de Fuerza:", scaledForce);
-
+    
 
     const currentDegree = myDegreeRef.current;
     const forceMultiplier = 10;
@@ -52,7 +52,7 @@ const Home = () => {
     // Convierte el ángulo a radianes
     const radians = (currentDegree * Math.PI) / 180;
 
-    if (data?.direction?.y == "down") {
+    if (data?.direction?.y == "up") {
       y -= scaledForce * forceMultiplier * Math.cos(radians);
       x += scaledForce * forceMultiplier * Math.sin(radians);
     } else {
@@ -63,7 +63,7 @@ const Home = () => {
   };
 
   const handleJoystickDataAngle = (data) => {
-    const rotation = data.angle.degree;
+    const rotation = data;
 
     //console.log(data.angle.degree);
     setDegree(rotation);
@@ -73,9 +73,9 @@ const Home = () => {
   return (
     <div>
       <div className="information">
-        <p>X = {position.x.toFixed(0)}</p>
-        <p>Y = {position.y.toFixed(0)}</p>
-        <p>Degrees = {degree.toFixed(0)}</p>
+        <p>X = {position.x?.toFixed(0)}</p>
+        <p>Y = {position.y?.toFixed(0)}</p>
+        <p>Degrees = {degree?.toFixed(0)}</p>
       </div>
       <Robot x={position.x} y={position.y} angle={degree} />
       <div className="wrapperRobot">

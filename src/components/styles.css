@@ -10,7 +10,7 @@
   position: absolute;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-top: 20px solid rgb(90, 87, 87);
+  border-bottom: 20px solid rgb(90, 87, 87);
 }
 
 .wave {

@@ -28,8 +28,9 @@ function AngleJoystick({ onJoystickMove2 }) {
       //console.log(data);
       //pos = data.position;
       //data2 = data.angle;
-      data2 = data;
+      data2 = (450 - data.angle.degree) % 360;
       //onJoystickMove(data);
+      //console.log(data2);
     });
 
     joystick.on("start", () => {
