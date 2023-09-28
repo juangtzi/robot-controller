@@ -13,12 +13,12 @@ const JoystickAngle = dynamic(() => import("../components/AngleJoystick"), {
 
 import Robot from "../components/Robot";
 
-//import Room from "../components/Room";
+// import Room from "../components/Room";
 //import NormalJoystick from "@/components/NormalJoystick";
 //import AngleJoystick from "@/components/AngleJoystick";
 
 const Home = () => {
-  const [position, setPosition] = useState({ x: 150, y: 150 });
+  const [position, setPosition] = useState({ x: 100, y: 100 });
 
   const [degree, setDegree] = useState(0);
   const myDegreeRef = useRef(degree);
@@ -52,14 +52,40 @@ const Home = () => {
     // Convierte el ángulo a radianes
     const radians = (currentDegree * Math.PI) / 180;
 
+
+    // Definir los límites de la habitación
+    const minX = 0; // Valor mínimo de la coordenada x
+    const maxX = 350; // Valor máximo de la coordenada x
+    const minY = 0; // Valor mínimo de la coordenada y
+    const maxY = 480; // Valor máximo de la coordenada y
+
+    // Obtener las coordenadas actuales del objeto
+    const currentX = x;
+    const currentY = y;
+
     if (data?.direction?.y == "up") {
-      y -= scaledForce * forceMultiplier * Math.cos(radians);
-      x += scaledForce * forceMultiplier * Math.sin(radians);
+      const newY = currentY - scaledForce * forceMultiplier * Math.cos(radians);
+      const newX = currentX + scaledForce * forceMultiplier * Math.sin(radians);
+
+  // Verificar si las nuevas coordenadas están dentro de los límites
+        if (newX >= minX && newX <= maxX && newY >= minY && newY <= maxY) {
+        // Solo actualizar las coordenadas si están dentro de los límites
+              x = newX;
+              y = newY;
+  }
     } else {
-      x -= scaledForce * forceMultiplier * Math.sin(radians);
-      y += scaledForce * forceMultiplier * Math.cos(radians);
+      const newX  = currentX - scaledForce * forceMultiplier * Math.sin(radians);
+      const newY = currentY + scaledForce * forceMultiplier * Math.cos(radians);
+
+      // Verificar si las nuevas coordenadas están dentro de los límites
+         if (newX >= minX && newX <= maxX && newY >= minY && newY <= maxY) {
+        // Solo actualizar las coordenadas si están dentro de los límites
+            x = newX;
+            y = newY;
+  }
     }
     setPosition({ x, y });
+    
   };
 
   const handleJoystickDataAngle = (data) => {
@@ -70,6 +96,7 @@ const Home = () => {
     myDegreeRef.current = rotation;
   };
 
+
   return (
     <div>
       <div className="information">
@@ -77,12 +104,17 @@ const Home = () => {
         <p>Y = {position.y?.toFixed(0)}</p>
         <p>Degrees = {degree?.toFixed(0)}</p>
       </div>
-      <Robot x={position.x} y={position.y} angle={degree} />
+      <div className="room">
+       {/* <div className="carga"></div> */}
+       
+        <Robot x={position.x} y={position.y} angle={degree} />
+      </div>
+      
       <div className="wrapperRobot">
         <div className="joystickStyle">
           <JoystickY onJoystickMove={handleJoystickData} />
           <JoystickAngle onJoystickMove2={handleJoystickDataAngle} />
-        </div>
+        </div>   
       </div>
     </div>
   );

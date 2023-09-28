@@ -2,6 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgba(69, 69, 72, 0.42);
+  padding: 5px;
+  margin-bottom: 20px;
+  color: black;
+  font-size: large;
+  font-weight: bold;
+  width: 100%;
+
 }
 
 .robot {
@@ -38,7 +46,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
+
 
 .wrapperRobot {
   position: fixed;
@@ -46,4 +56,18 @@
   width: 100%; /* ajusta el ancho según tus necesidades */
   /* color: #fff; Color del texto dentro del div */
   padding: 100px; /* Espaciado interior del div */
+}
+
+
+.room{
+  width: 380px;
+  height: 500px;
+  border: 2px solid black;
+  position: relative; /* Cambiamos a posición relativa */
+  margin: 0 auto; /* Centramos horizontalmente */
+}
+.carga{
+  width: 30px;
+  height: 30px;
+  background-color: black;
 }
